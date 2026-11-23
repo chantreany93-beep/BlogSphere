@@ -1,0 +1,23 @@
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: blogsphere-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    expose:
+      - "5000"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: blogsphere-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
